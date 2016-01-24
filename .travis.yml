@@ -1,0 +1,10 @@
+---
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+- node
+before_install:
+- export DISPLAY=:99.0
+- Xvfb :99 -ac -screen 0 1024x768x8 &>/dev/null &
+- npm install -g npm
