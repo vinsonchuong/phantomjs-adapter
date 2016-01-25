@@ -1,7 +1,7 @@
 {
   "name": "phantomjs-promise-es6",
   "version": "0.0.1",
-  "description": "",
+  "description": "An ES6 promise adapter for PhantomJS for use with ES7 async/await",
   "keywords": [],
   "homepage": "https://github.com/vinsonchuong/phantomjs-promise-es6",
   "bugs": "https://github.com/vinsonchuong/phantomjs-promise-es6/issues",
@@ -14,7 +14,6 @@
   ],
   "main": "src/index.js",
   "bin": {
-    "phantomjs-promise-es6": "src/bin/phantomjs-promise-es6.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +24,6 @@
     "test": "eslint && jasmine"
   },
   "dependencies": {
-    "node-promise-es6": "^0.3.0"
   },
   "devDependencies": {
     "dist-es6": "^0.1.3",
