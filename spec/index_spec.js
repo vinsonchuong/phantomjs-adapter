@@ -1,7 +1,10 @@
 import PhantomJS from 'phantomjs-promise-es6';
 
 describe('phantomjs-promise-es6', () => {
-  it('says Hello World!', async () => {
-    expect(PhantomJS).toBe('Hello World!');
+  xit('can open URLs', async () => {
+    const page = new PhantomJS();
+    await page.open('https://www.google.com');
+    const logo = await page.evaluate(`document.querySelector('#hplogo').alt`);
+    expect(logo).toBe('Google');
   });
 });
