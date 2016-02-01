@@ -1,5 +1,5 @@
-'use strict';
 /* eslint-disable */
+'use strict';
 var system = require('system');
 
 var methods = {
