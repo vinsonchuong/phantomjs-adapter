@@ -1,34 +1,15 @@
-class CallQueue {
-  constructor() {
-    this.currentId = 1;
-  }
-
-  defer(callback) {
-    callback(this.currentId);
-    return new Promise((resolve) => {
-      this[this.currentId++] = resolve;
-    });
-  }
-
-  resolve(id, result) {
-    this[id](result);
-  }
-}
+import Observable from 'phantomjs-promise-es6/lib/observable';
 
 export default class {
   constructor(server) {
     this.server = server;
-    this.calls = new CallQueue();
-    server.read((response) => this.receive(response));
+
+    const observable = new Observable((produce) => server.read(produce));
+    this.iterator = observable[Symbol.iterator]();
   }
 
   send(method, params) {
-    return this.calls.defer((id) => {
-      this.server.write({id, method, params});
-    });
-  }
-
-  receive({id, result}) {
-    this.calls.resolve(id, result);
+    this.server.write({method, params});
+    return this.iterator.next().value;
   }
 }
