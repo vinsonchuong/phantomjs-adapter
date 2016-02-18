@@ -1,45 +1,38 @@
+import * as path from 'path';
+import {childProcess, fs} from 'node-promise-es6';
+import * as fse from 'fs-extra-promise-es6';
 import RPCClient from 'phantomjs-promise-es6/lib/rpc-client';
+import Observable from 'phantomjs-promise-es6/lib/observable';
 
-class RPCServer {
-  constructor() {
-    this.writes = [];
-  }
-
-  read(callback) {
-    this.callback = callback;
-  }
-
-  write(data) {
-    this.writes.push(data);
-  }
+const scriptPath = path.resolve('phantom-script.js');
+const script = `
+'use strict';
+var system = require('system');
+var request;
+while (true) {
+  system.stdout.writeLine(JSON.stringify({
+    result: JSON.parse(system.stdin.readLine())
+  }));
 }
+`;
 
 describe('RPCClient', () => {
-  it('sends method calls to the server', () => {
-    const server = new RPCServer();
-    const client = new RPCClient(server);
-
-    client.send('methodName', ['param1', 'param2']);
-
-    expect(server.writes[0].method).toBe('methodName');
-    expect(server.writes[0].params).toEqual(['param1', 'param2']);
+  beforeEach(async () => {
+    await fs.writeFile(scriptPath, script);
   });
 
-  it('receives responses from the server', async () => {
-    const server = new RPCServer();
-    const client = new RPCClient(server);
+  afterEach(async () => {
+    await fse.remove(scriptPath);
+  });
 
-    const call1 = client.send('call1', []);
-    const call2 = client.send('call2', []);
+  it('sends and receives JSON messages to/from a child process', async () => {
+    const phantomProcess = childProcess.spawn('phantomjs', [scriptPath]);
+    const client = new RPCClient(phantomProcess);
 
-    server.callback({result: 'result1'});
-    server.callback({result: 'result2'});
+    const promise1 = client.send('call1', []);
+    const promise2 = client.send('call2', []);
 
-    const call3 = client.send('call3', []);
-    server.callback({result: 'result3'});
-
-    expect(await call1).toEqual({result: 'result1'});
-    expect(await call2).toEqual({result: 'result2'});
-    expect(await call3).toEqual({result: 'result3'});
+    expect(await promise1).toEqual({result: {method: 'call1', params: []}});
+    expect(await promise2).toEqual({result: {method: 'call2', params: []}});
   });
 });
