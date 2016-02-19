@@ -8,11 +8,11 @@ export default class {
     })
       .flatMap((buffer) => buffer.toString().split('\n'))
       .filter((line) => line.trim().length > 0)
-      .map((line) => JSON.parse(line))
+      .map((line) => JSON.parse(line));
   }
 
   send(method, params) {
-    this.serverProcess.stdin.write(JSON.stringify({method, params}) + '\n');
+    this.serverProcess.stdin.write(`${JSON.stringify({method, params})}\n`);
     return this.observable.next();
   }
 }

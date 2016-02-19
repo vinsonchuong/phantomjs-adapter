@@ -13,9 +13,11 @@ export default class Observable {
   }
 
   * [Symbol.iterator]() {
+    /* eslint-disable lines-around-comment, no-constant-condition */
     while (true) {
       yield this.next();
     }
+    /* eslint-enable lines-around-comment, no-constant-condition */
   }
 
   next() {

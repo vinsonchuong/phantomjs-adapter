@@ -8,7 +8,9 @@ describe('Observable', () => {
 
   it('asynchronously yields values from a push interface', async () => {
     let observer;
-    const observable = new Observable((produce) => observer = produce);
+    const observable = new Observable((produce) => {
+      observer = produce;
+    });
 
     observer(1);
     observer(2);
@@ -21,7 +23,9 @@ describe('Observable', () => {
 
   it('can be read an arbitrary number of times', async () => {
     let observer;
-    const observable = new Observable((produce) => observer = produce);
+    const observable = new Observable((produce) => {
+      observer = produce;
+    });
 
     const promise1 = observable.next();
     const promise2 = observable.next();

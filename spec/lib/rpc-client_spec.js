@@ -2,7 +2,6 @@ import * as path from 'path';
 import {childProcess, fs} from 'node-promise-es6';
 import * as fse from 'fs-extra-promise-es6';
 import RPCClient from 'phantomjs-promise-es6/lib/rpc-client';
-import Observable from 'phantomjs-promise-es6/lib/observable';
 
 const scriptPath = path.resolve('phantom-script.js');
 const script = `
