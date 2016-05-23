@@ -1,10 +1,29 @@
 import {Observable} from 'esnext-async';
 
+class RequestQueue {
+  constructor() {
+    this.nextId = 1;
+    this.requests = new Map();
+  }
+
+  resolve(id, response) {
+    this.requests.get(id)(response);
+    this.requests.delete(id);
+  }
+
+  defer(makeRequest) {
+    return new Promise((resolve) => {
+      const id = this.nextId++;
+      this.requests.set(id, resolve);
+      makeRequest(id);
+    });
+  }
+}
+
 export default class {
   constructor(serverProcess) {
     this.serverProcess = serverProcess;
-    this.requestId = 1;
-    this.requests = new Map();
+    this.requests = new RequestQueue();
 
     new Observable((observer) => {
       this.serverProcess.stdout.on('data', (data) => {
@@ -15,15 +34,12 @@ export default class {
       .filter((line) => line.trim().length > 0)
       .map((line) => JSON.parse(line))
       .forEach((response) => {
-        this.requests.get(response.id)(response);
-        this.requests.delete(response.id);
+        this.requests.resolve(response.id, response);
       });
   }
 
   send(method, params) {
-    return new Promise((resolve) => {
-      const id = this.requestId++;
-      this.requests.set(id, resolve);
+    return this.requests.defer((id) => {
       const payload = {id, method, params};
       this.serverProcess.stdin.write(`${JSON.stringify(payload)}\n`);
     });
