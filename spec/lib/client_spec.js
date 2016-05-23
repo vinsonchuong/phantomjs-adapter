@@ -6,8 +6,10 @@ const phantomScript = `
 var system = require('system');
 var request;
 while (true) {
+  request = JSON.parse(system.stdin.readLine());
   system.stdout.writeLine(JSON.stringify({
-    result: JSON.parse(system.stdin.readLine())
+    id: request.id,
+    result: request
   }));
 }
 `;
@@ -31,9 +33,15 @@ describe('Client', () => {
 
     const client = new Client(phantom.process);
 
-    expect(await client.send('call1', []))
-      .toEqual({result: {method: 'call1', params: []}});
-    expect(await client.send('call2', []))
-      .toEqual({result: {method: 'call2', params: []}});
+    const promise1 = client.send('call1', []);
+    const promise2 = client.send('call2', []);
+    expect(await promise1).toEqual({
+      id: 1,
+      result: {id: 1, method: 'call1', params: []}
+    });
+    expect(await promise2).toEqual({
+      id: 2,
+      result: {id: 2, method: 'call2', params: []}
+    });
   });
 });
