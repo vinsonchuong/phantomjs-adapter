@@ -8,7 +8,8 @@ class RequestQueue {
 
   defer(makeRequest) {
     return new Promise((resolve) => {
-      const id = this.nextId++;
+      const id = this.nextId;
+      this.nextId += 1;
       this.requests.set(id, resolve);
       makeRequest(id);
     });
