@@ -6,17 +6,17 @@ class RequestQueue {
     this.requests = new Map();
   }
 
-  resolve(id, response) {
-    this.requests.get(id)(response);
-    this.requests.delete(id);
-  }
-
   defer(makeRequest) {
     return new Promise((resolve) => {
       const id = this.nextId++;
       this.requests.set(id, resolve);
       makeRequest(id);
     });
+  }
+
+  resolve(id, response) {
+    this.requests.get(id)(response);
+    this.requests.delete(id);
   }
 }
 
