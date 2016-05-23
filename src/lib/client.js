@@ -1,10 +1,12 @@
-import Observable from 'phantomjs-promise-es6/lib/observable';
+import {AwaitableObservable} from 'esnext-async';
 
 export default class {
   constructor(serverProcess) {
     this.serverProcess = serverProcess;
-    this.observable = new Observable((produce) => {
-      this.serverProcess.stdout.on('data', produce);
+    this.observable = new AwaitableObservable((observer) => {
+      this.serverProcess.stdout.on('data', (data) => {
+        observer.next(data);
+      });
     })
       .flatMap((buffer) => buffer.toString().split('\n'))
       .filter((line) => line.trim().length > 0)
@@ -13,6 +15,6 @@ export default class {
 
   send(method, params) {
     this.serverProcess.stdin.write(`${JSON.stringify({method, params})}\n`);
-    return this.observable.next();
+    return this.observable;
   }
 }
