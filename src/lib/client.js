@@ -1,4 +1,4 @@
-import {Observable} from 'esnext-async';
+import {parse, serialize} from 'ndjson';
 
 class RequestQueue {
   constructor() {
@@ -21,28 +21,38 @@ class RequestQueue {
   }
 }
 
+class StdioAdapter {
+  constructor(serverProcess) {
+    this.inputStream = serialize();
+    this.inputStream.on('data', (line) => {
+      serverProcess.stdin.write(line);
+    });
+
+    this.outputStream = serverProcess.stdout.pipe(parse());
+  }
+
+  read(consume) {
+    this.outputStream.on('data', consume);
+  }
+
+  write(payload) {
+    this.inputStream.write(payload);
+  }
+}
+
 export default class {
   constructor(serverProcess) {
-    this.serverProcess = serverProcess;
     this.requests = new RequestQueue();
+    this.stdio = new StdioAdapter(serverProcess);
 
-    new Observable((observer) => {
-      this.serverProcess.stdout.on('data', (data) => {
-        observer.next(data);
-      });
-    })
-      .flatMap((buffer) => buffer.toString().split('\n'))
-      .filter((line) => line.trim().length > 0)
-      .map((line) => JSON.parse(line))
-      .forEach((response) => {
-        this.requests.resolve(response.id, response);
-      });
+    this.stdio.read((response) => {
+      this.requests.resolve(response.id, response);
+    });
   }
 
   send(method, params) {
     return this.requests.defer((id) => {
-      const payload = {id, method, params};
-      this.serverProcess.stdin.write(`${JSON.stringify(payload)}\n`);
+      this.stdio.write({id, method, params});
     });
   }
 }
