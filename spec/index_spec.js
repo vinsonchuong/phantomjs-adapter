@@ -13,7 +13,7 @@ async function phantomPids() {
 
 describe('phantomjs-promise-es6', () => {
   describe('#exit', () => {
-    fit('kills the phantomjs process', async () => {
+    it('kills the phantomjs process', async () => {
       const browser = new PhantomJS();
       expect(await phantomPids()).toContain(browser.process.pid);
       await browser.exit();
