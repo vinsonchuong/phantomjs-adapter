@@ -12,6 +12,5 @@ export default class {
 
   async exit() {
     this.phantomProcess.kill();
-    // await this.client.send('kill', []);
   }
 }
