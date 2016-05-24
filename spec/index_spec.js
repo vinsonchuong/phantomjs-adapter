@@ -2,12 +2,6 @@ import {childProcess} from 'node-promise-es6';
 import {path as phantomJsPath} from 'phantomjs-prebuilt';
 import PhantomJS from 'phantomjs-promise-es6';
 
-async function sleep(ms) {
-  await new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
 async function phantomPids() {
   try {
     const {stdout: pids} = await childProcess.exec(`pgrep -f '${phantomJsPath}'`);
