@@ -21,7 +21,9 @@ describe('phantomjs-promise-es6', () => {
   describe('#exit', () => {
     it('kills the phantomjs process', async () => {
       const browser = new PhantomJS();
-      expect(await phantomPid()).not.toBeNull();
+      const pid = await phantomPid();
+      expect(pid).not.toBeNull();
+      process.stdout.write(`${pid}\n`);
 
       await browser.exit();
       await sleep(1000);
