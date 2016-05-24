@@ -8,10 +8,10 @@ async function sleep(ms) {
   });
 }
 
-async function phantomPid() {
+async function phantomPids() {
   try {
-    const {stdout: pid} = await childProcess.exec(`pgrep -f '${phantomJsPath}'`);
-    return pid.trim();
+    const {stdout: pids} = await childProcess.exec(`pgrep -f '${phantomJsPath}'`);
+    return pids.split('\n').filter(Boolean).map(Number);
   } catch (error) {
     return null;
   }
@@ -20,16 +20,10 @@ async function phantomPid() {
 describe('phantomjs-promise-es6', () => {
   describe('#exit', () => {
     fit('kills the phantomjs process', async () => {
-      expect(await phantomPid()).toBeNull();
-
       const browser = new PhantomJS();
-      const pid = await phantomPid();
-      expect(pid).not.toBeNull();
-      process.stdout.write(`${pid}\n`);
-
+      expect(await phantomPids()).toContain(browser.process.pid);
       await browser.exit();
-      await sleep(3000);
-      expect(await phantomPid()).toBeNull();
+      expect(await phantomPids()).not.toContain(browser.process.pid);
     });
   });
 });
