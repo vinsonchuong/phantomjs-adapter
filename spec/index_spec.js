@@ -19,7 +19,7 @@ async function phantomPid() {
 
 describe('phantomjs-promise-es6', () => {
   describe('#exit', () => {
-    it('kills the phantomjs process', async () => {
+    fit('kills the phantomjs process', async () => {
       const browser = new PhantomJS();
       const pid = await phantomPid();
       expect(pid).not.toBeNull();
