@@ -11,10 +11,6 @@ while (true) {
     id: request.id,
     result: request
   }));
-
-  if (request.method === 'exit') {
-    break;
-  }
 }
 `;
 
@@ -47,7 +43,5 @@ describe('Client', () => {
       id: 2,
       result: {id: 2, method: 'call2', params: []}
     });
-
-    await client.send('exit');
   });
 });
