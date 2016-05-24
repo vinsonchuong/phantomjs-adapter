@@ -50,7 +50,7 @@ export default class {
     });
   }
 
-  send(method, params) {
+  send(method, params = []) {
     return this.requests.defer((id) => {
       this.stdio.write({id, method, params});
     });
