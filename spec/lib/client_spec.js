@@ -28,7 +28,7 @@ describe('Client', () => {
     await directory.remove();
   });
 
-  it('sends and receives JSON messages to/from a child process', async () => {
+  fit('sends and receives JSON messages to/from a child process', async () => {
     const directory = new Directory('temp');
     await directory.write({'phantom-script.js': phantomScript});
 
