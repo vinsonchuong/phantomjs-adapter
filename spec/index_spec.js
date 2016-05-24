@@ -21,13 +21,15 @@ describe('phantomjs-promise-es6', () => {
   describe('#exit', () => {
     fit('kills the phantomjs process', async () => {
       const browser = new PhantomJS();
-      const pid = await phantomPid();
+      let pid = await phantomPid();
       expect(pid).not.toBeNull();
       process.stdout.write(`${pid}\n`);
 
       await browser.exit();
-      await sleep(1000);
-      expect(await phantomPid()).toBeNull();
+      await sleep(3000);
+      pid = await phantomPid();
+      process.stdout.write(`${pid}\n`);
+      expect(pid).toBeNull();
     });
   });
 });
