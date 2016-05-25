@@ -6,7 +6,8 @@ const phantomScriptPath = require.resolve('phantomjs-promise-es6/lib/phantom-scr
 
 export default class {
   constructor() {
-    this.client = new Client(spawn(phantomJsPath, [phantomScriptPath]));
+    this.process = spawn(phantomJsPath, [phantomScriptPath]);
+    this.client = new Client(this.process);
   }
 
   async exit() {
