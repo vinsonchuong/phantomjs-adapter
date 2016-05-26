@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "phantomjs-prebuilt": "^2.1.7",
-    "ndjson": "^1.4.3"
+    "ndjson": "^1.4.3",
+    "parse-function": "^2.3.2"
   },
   "devDependencies": {
     "dist-es6": "^0.1.18",

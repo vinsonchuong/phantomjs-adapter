@@ -12,12 +12,17 @@ async function phantomPids() {
 }
 
 describe('phantomjs-promise-es6', () => {
-  describe('#exit', () => {
-    it('kills the phantomjs process', async () => {
-      const browser = new PhantomJS();
-      expect(await phantomPids()).toContain(browser.process.pid);
-      await browser.exit();
-      expect(await phantomPids()).not.toContain(browser.process.pid);
-    });
+  it('can kill the phantomjs process', async () => {
+    const browser = new PhantomJS();
+    expect(await phantomPids()).toContain(browser.process.pid);
+    await browser.exit();
+    expect(await phantomPids()).not.toContain(browser.process.pid);
+  });
+
+  it('can open a URL', async () => {
+    const browser = new PhantomJS();
+    await browser.open('https://github.com');
+    expect(await browser.evaluate(() => document.title)).toContain('GitHub');
+    await browser.exit();
   });
 });
