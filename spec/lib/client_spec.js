@@ -35,13 +35,7 @@ describe('Client', () => {
 
     const promise1 = client.send('call1', []);
     const promise2 = client.send('call2', []);
-    expect(await promise1).toEqual({
-      id: 1,
-      result: {id: 1, method: 'call1', params: []}
-    });
-    expect(await promise2).toEqual({
-      id: 2,
-      result: {id: 2, method: 'call2', params: []}
-    });
+    expect(await promise1).toEqual({id: 1, method: 'call1', params: []});
+    expect(await promise2).toEqual({id: 2, method: 'call2', params: []});
   });
 });

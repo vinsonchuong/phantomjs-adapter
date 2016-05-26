@@ -45,8 +45,8 @@ export default class {
     this.requests = new RequestQueue();
     this.stdio = new StdioAdapter(serverProcess);
 
-    this.stdio.read((response) => {
-      this.requests.resolve(response.id, response);
+    this.stdio.read(({id, result}) => {
+      this.requests.resolve(id, result);
     });
   }
 

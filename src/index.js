@@ -15,17 +15,14 @@ export default class {
 
   async evaluate(fn) {
     const functionBody = parseFunction(fn.toString()).body;
-    const response = await this.client.send('evaluate', [functionBody]);
-    return response.result;
+    return await this.client.send('evaluate', [functionBody]);
   }
 
   async exit() {
-    const response = await this.client.send('exit');
-    return response.result;
+    return await this.client.send('exit');
   }
 
   async open(url) {
-    const response = await this.client.send('open', [url]);
-    return response.result;
+    return await this.client.send('open', [url]);
   }
 }
