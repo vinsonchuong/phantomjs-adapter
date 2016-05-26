@@ -13,19 +13,19 @@ An ES6 promise adapter for [PhantomJS](http://phantomjs.org/) for use with
 import PhantomJS from 'phantomjs-promise-es6';
 
 async function run() {
-  const page = new PhantomJS();
-  await page.open('https://www.google.com');
-  const inputRect = page.evaluate(() =>
+  const browser = new PhantomJS();
+  await browser.open('https://www.google.com');
+  const inputRect = browser.evaluate(() =>
     document.querySelector('[name="q"]').getBoundingClientRect()
   );
-  page.sendEvent(
+  browser.sendEvent(
     'click',
     inputRect.x + inputRect.width / 2,
     inputRect.y + inputRect.height / 2
   );
-  page.sendEvent('keypress', 'PhantomJS');
-  page.sendEvent('keypress', page.event.key.Enter);
-  const firstResult = page.evaluate(() =>
+  browser.sendEvent('keypress', 'PhantomJS');
+  browser.sendEvent('keypress', page.event.key.Enter);
+  const firstResult = browser.evaluate(() =>
     document.querySelector('.g h3').textContent
   );
   console.log(firstResult);
