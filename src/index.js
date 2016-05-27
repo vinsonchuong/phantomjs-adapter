@@ -25,4 +25,8 @@ export default class {
   async open(url) {
     return await this.client.send('open', [url]);
   }
+
+  async title() {
+    return this.evaluate(() => document.title);
+  }
 }

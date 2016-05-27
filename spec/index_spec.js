@@ -22,7 +22,7 @@ describe('phantomjs-promise-es6', () => {
   it('can open a URL', async () => {
     const browser = new PhantomJS();
     await browser.open('https://github.com');
-    expect(await browser.evaluate(() => document.title)).toContain('GitHub');
+    expect(await browser.title()).toContain('GitHub');
     await browser.exit();
   });
 });
