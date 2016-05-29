@@ -25,4 +25,12 @@ describe('phantomjs-promise-es6', () => {
     expect(await browser.title()).toContain('GitHub');
     await browser.exit();
   });
+
+  xit('it can read information about a DOM element', async () => {
+    const browser = new PhantomJS();
+    await browser.open('https://github.com');
+    const {textContent} = await browser.find('.jumbotron-title');
+    expect(textContent).toBe('How people build software');
+    await browser.exit();
+  });
 });
