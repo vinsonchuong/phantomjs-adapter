@@ -84,7 +84,8 @@ describe('phantomjs-promise-es6', () => {
     <div id="root"></div>
     `,
     async (browser) => {
-      await browser.click('button');
+      const button = await browser.find('button');
+      await button.click();
 
       const root = await browser.find('#root');
       expect(root.textContent).toBe('Hello World!');

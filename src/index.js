@@ -4,6 +4,23 @@ import Client from 'phantomjs-promise-es6/lib/client';
 
 const phantomScriptPath = require.resolve('phantomjs-promise-es6/lib/phantom-script.js');
 
+class Element {
+  constructor(browser, selector, data) {
+    this.browser = browser;
+    this.selector = selector;
+    Object.assign(this, data);
+  }
+
+  async click() {
+    const {top, left, width, height} = this.boundingClientRect;
+    return await this.browser.sendEvent(
+      'click',
+      top + width / 2,
+      left + height / 2
+    );
+  }
+}
+
 export default class {
   constructor() {
     this.process = spawn(phantomJsPath, [phantomScriptPath], {
@@ -35,7 +52,7 @@ export default class {
   }
 
   async find(selector) {
-    return await this.evaluate(`
+    const data = await this.evaluate(`
       var element = document.querySelector('${selector}');
 
       var attributes = {};
@@ -50,11 +67,6 @@ export default class {
         textContent: element.textContent
       };
     `);
-  }
-
-  async click(selector) {
-    const {boundingClientRect: {top, left, width, height}} =
-      await this.find(selector);
-    return await this.sendEvent('click', top + width / 2, left + height / 2);
+    return new Element(this, selector, data);
   }
 }
