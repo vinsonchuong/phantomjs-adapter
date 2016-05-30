@@ -33,13 +33,16 @@ export default class {
   async find(selector) {
     return await this.evaluate(`
       var element = document.querySelector('${selector}');
+
       var attributes = {};
       for (var i = 0; i < element.attributes.length; i++) {
         const attribute = element.attributes[i];
         attributes[attribute.name] = attribute.value;
       }
+
       return {
         attributes: attributes,
+        boundingClientRect: element.getBoundingClientRect(),
         textContent: element.textContent
       };
     `);

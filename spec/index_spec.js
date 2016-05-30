@@ -50,13 +50,27 @@ describe('phantomjs-promise-es6', () => {
     `
     <!doctype html>
     <meta charset="utf-8">
-    <div id="root" class="container">Hello World!</div>
+    <div
+      id="root"
+      class="container"
+      style="position: absolute; top: 0; left: 0; width: 200px; height: 100px;"
+    >
+      Hello World!
+    </div>
     `,
     async (browser) => {
       const element = await browser.find('div');
-      expect(element.textContent).toBe('Hello World!');
+      expect(element.textContent.trim()).toBe('Hello World!');
       expect(element.attributes.id).toBe('root');
       expect(element.attributes.class).toBe('container');
+      expect(element.boundingClientRect).toEqual({
+        top: 0,
+        right: 200,
+        bottom: 100,
+        left: 0,
+        width: 200,
+        height: 100
+      });
     }
   ));
 });
