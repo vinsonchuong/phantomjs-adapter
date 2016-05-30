@@ -73,4 +73,21 @@ describe('phantomjs-promise-es6', () => {
       });
     }
   ));
+
+  it('can click on a DOM element', withHtml(
+    `
+    <!doctype html>
+    <meta charset="utf-8">
+    <button onClick="root.textContent = 'Hello World!';">
+      Button
+    </button>
+    <div id="root"></div>
+    `,
+    async (browser) => {
+      await browser.click('button');
+
+      const root = await browser.find('#root');
+      expect(root.textContent).toBe('Hello World!');
+    }
+  ));
 });

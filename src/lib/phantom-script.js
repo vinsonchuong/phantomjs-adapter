@@ -6,9 +6,6 @@ var webpage = require('webpage');
 var page;
 
 var methods = {
-  evaluate: function(functionBody, callback) {
-    callback(page.evaluate(new Function(functionBody)));
-  },
   exit: function(callback) {
     callback(true);
   },
@@ -17,6 +14,15 @@ var methods = {
     page.open(url, function(status) {
       callback(status === 'success');
     });
+  },
+  evaluate: function(functionBody, callback) {
+    callback(page.evaluate(new Function(functionBody)));
+  },
+  sendEvent: function() {
+    var params = Array.prototype.slice.call(arguments, 0, -1);
+    var callback = arguments[arguments.length - 1];
+    page.sendEvent.apply(page, params);
+    callback(true);
   }
 };
 

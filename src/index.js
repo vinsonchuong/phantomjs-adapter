@@ -24,6 +24,10 @@ export default class {
     return await this.client.send('evaluate', [functionBody]);
   }
 
+  async sendEvent(...args) {
+    return await this.client.send('sendEvent', [...args]);
+  }
+
   async title() {
     return await this.evaluate(`
       return document.title;
@@ -46,5 +50,11 @@ export default class {
         textContent: element.textContent
       };
     `);
+  }
+
+  async click(selector) {
+    const {boundingClientRect: {top, left, width, height}} =
+      await this.find(selector);
+    return await this.sendEvent('click', top + width / 2, left + height / 2);
   }
 }
