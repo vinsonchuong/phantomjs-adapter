@@ -1,4 +1,5 @@
 import {childProcess} from 'node-promise-es6';
+import Directory from 'directory-helpers';
 import {path as phantomJsPath} from 'phantomjs-prebuilt';
 import PhantomJS from 'phantomjs-promise-es6';
 
@@ -20,10 +21,22 @@ describe('phantomjs-promise-es6', () => {
   });
 
   it('can open a URL', async () => {
+    const directory = new Directory('temp');
     const browser = new PhantomJS();
-    await browser.open('https://github.com');
-    expect(await browser.title()).toContain('GitHub');
-    await browser.exit();
+    try {
+      await directory.write({
+        'index.html': `
+          <!doctype html>
+          <meta charset="utf-8">
+          <title>Hello World!</title>
+        `
+      });
+      await browser.open(`file://${directory.path('index.html')}`);
+      expect(await browser.title()).toContain('Hello World!');
+    } finally {
+      await browser.exit();
+      await directory.remove();
+    }
   });
 
   xit('it can read information about a DOM element', async () => {
