@@ -78,6 +78,19 @@ describe('phantomjs-promise-es6', () => {
     }
   ));
 
+  it('can find a DOM element by text', withHtml(
+    `
+    <!doctype html>
+    <meta charset="utf-8">
+    <span>Hello</span>
+    <span>World!</span>
+    `,
+    async (browser) => {
+      const span = await browser.find('span', {text: 'World!'});
+      expect(span.textContent).toBe('World!');
+    }
+  ));
+
   it('can click on a DOM element', withHtml(
     `
     <!doctype html>

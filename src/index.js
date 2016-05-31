@@ -1,5 +1,6 @@
 import {spawn} from 'child_process';
 import {path as phantomJsPath} from 'phantomjs-prebuilt';
+import cssToXPath from 'css-to-xpath';
 import Client from 'phantomjs-promise-es6/lib/client';
 
 const phantomScriptPath = require.resolve('phantomjs-promise-es6/lib/phantom-script.js');
@@ -58,9 +59,21 @@ export default class {
     `);
   }
 
-  async find(selector) {
+  async find(selector, {text} = {}) {
+    const xpath = Object.is(text, undefined) ?
+      cssToXPath(selector) :
+      cssToXPath
+        .parse(selector)
+        .where(cssToXPath.xPathBuilder.text().contains(text))
+        .toXPath();
     const data = await this.evaluate(`
-      var element = document.querySelector('${selector}');
+      var element = document.evaluate(
+        '${xpath.replace(/'/g, "\\'")}',
+        document,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+      ).singleNodeValue;
 
       var attributes = {};
       for (var i = 0; i < element.attributes.length; i++) {
