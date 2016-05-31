@@ -4,7 +4,7 @@ import Client from 'phantomjs-promise-es6/lib/client';
 
 const phantomScriptPath = require.resolve('phantomjs-promise-es6/lib/phantom-script.js');
 
-class Element {
+export class Element {
   constructor(browser, selector, data) {
     this.browser = browser;
     this.selector = selector;
@@ -22,6 +22,8 @@ class Element {
 }
 
 export default class {
+  static Element = Element;
+
   constructor() {
     this.process = spawn(phantomJsPath, [phantomScriptPath], {
       stdio: ['pipe', 'pipe', 'inherit']
@@ -67,6 +69,6 @@ export default class {
         textContent: element.textContent
       };
     `);
-    return new Element(this, selector, data);
+    return new this.constructor.Element(this, selector, data);
   }
 }
