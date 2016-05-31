@@ -95,4 +95,19 @@ describe('phantomjs-promise-es6', () => {
       expect(root.textContent).toBe('Hello World!');
     }
   ));
+
+  it('can fill in a DOM element', withHtml(
+    `
+    <!doctype html>
+    <meta charset="utf-8">
+    <input>
+    `,
+    async (browser) => {
+      let input = await browser.find('input');
+      await input.fillIn('Hello World!');
+
+      input = await browser.find('input');
+      expect(input.value).toBe('Hello World!');
+    }
+  ));
 });

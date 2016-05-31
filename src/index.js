@@ -19,6 +19,11 @@ export class Element {
       left + height / 2
     );
   }
+
+  async fillIn(text) {
+    await this.click();
+    return await this.browser.sendEvent('keypress', text);
+  }
 }
 
 export default class {
