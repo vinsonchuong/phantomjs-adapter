@@ -57,13 +57,14 @@ describe('phantomjs-promise-es6', () => {
     >
       Hello World!
     </div>
+    <input value="text">
     `,
     async (browser) => {
-      const element = await browser.find('div');
-      expect(element.textContent.trim()).toBe('Hello World!');
-      expect(element.attributes.id).toBe('root');
-      expect(element.attributes.class).toBe('container');
-      expect(element.boundingClientRect).toEqual({
+      const div = await browser.find('div');
+      expect(div.textContent.trim()).toBe('Hello World!');
+      expect(div.attributes.id).toBe('root');
+      expect(div.attributes.class).toBe('container');
+      expect(div.boundingClientRect).toEqual({
         top: 0,
         right: 200,
         bottom: 100,
@@ -71,6 +72,9 @@ describe('phantomjs-promise-es6', () => {
         width: 200,
         height: 100
       });
+
+      const input = await browser.find('input');
+      expect(input.value).toBe('text');
     }
   ));
 

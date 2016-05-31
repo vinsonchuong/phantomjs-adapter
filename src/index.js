@@ -66,7 +66,8 @@ export default class {
       return {
         attributes: attributes,
         boundingClientRect: element.getBoundingClientRect(),
-        textContent: element.textContent
+        textContent: element.textContent,
+        value: element.value
       };
     `);
     return new this.constructor.Element(this, selector, data);
