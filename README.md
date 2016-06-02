@@ -108,6 +108,30 @@ page using
 It is assumed that `PhantomJS#open` has been called and its returned promise
 resolved.
 
+##### Find
+```js
+import PhantomJS from 'phantomjs'
+
+async function run() {
+  const browser = new PhantomJS();
+  await browser.open('http://github.com');
+
+  const title = await browser.find('h1.jumbotron-title');
+  console.log(title.textContent);
+
+  const signUpButton = await browser.find('a', {text: 'Sign up'});
+  await signUpButton.click();
+
+  await browser.exit();
+}
+run();
+```
+Finds an element on the currently open page given a CSS selector and optional
+text content substring. The promise is resolved with an instance of `Element`.
+The CSS selector and text content substring are converted into XPath and
+evaluated using `document.evaluate`. It is assumed that `PhantomJS#open` has
+been called and its returned promise resolved.
+
 ## Development
 ### Getting Started
 The application requires the following external dependencies:
