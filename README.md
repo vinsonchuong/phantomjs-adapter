@@ -30,6 +30,8 @@ run();
 
 ### API Documentation
 #### PhantomJS
+An Class that mediates communication with a PhantomJS browser instance.
+
 ##### Constructor
 ```js
 import PhantomJS from 'phantomjs'
