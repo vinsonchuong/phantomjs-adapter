@@ -203,7 +203,7 @@ async function run() {
   await browser.open('http://github.com');
 
   const title = await browser.find('h1.jumbotron-title');
-  console.log(title.textContent);
+  console.log(title.value);
 
   await browser.exit();
 }
