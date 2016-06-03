@@ -134,6 +134,11 @@ The CSS selector and text content substring are converted into XPath and
 evaluated using `document.evaluate`. It is assumed that `PhantomJS#open` has
 been called and its returned promise resolved.
 
+### Element
+A class that represents a snapshot of an element rendered in the currently open
+page of a PhantomJS browser. It exposes data about the element and provides an
+interface for sending user actions to that element.
+
 ## Development
 ### Getting Started
 The application requires the following external dependencies:
