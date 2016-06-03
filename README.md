@@ -137,7 +137,81 @@ been called and its returned promise resolved.
 ### Element
 A class that represents a snapshot of an element rendered in the currently open
 page of a PhantomJS browser. It exposes data about the element and provides an
-interface for sending user actions to that element.
+interface for sending user actions to that element. Element instances are
+returned by `PhantomJS#find`.
+
+#### Attributes
+```js
+import PhantomJS from 'phantomjs'
+
+async function run() {
+  const browser = new PhantomJS();
+  await browser.open('http://github.com');
+
+  const title = await browser.find('h1.jumbotron-title');
+  console.log(title.attributes.class);
+
+  await browser.exit();
+}
+run();
+```
+An object representing the HTML attributes of the element.
+
+#### BoundingClientRect
+```js
+import PhantomJS from 'phantomjs'
+
+async function run() {
+  const browser = new PhantomJS();
+  await browser.open('http://github.com');
+
+  const title = await browser.find('h1.jumbotron-title');
+  console.log(title.boundingClientRect);
+
+  await browser.exit();
+}
+run();
+```
+An object containing the size and position of the element. These values are
+read using
+[`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
+
+#### TextContent
+```js
+import PhantomJS from 'phantomjs'
+
+async function run() {
+  const browser = new PhantomJS();
+  await browser.open('http://github.com');
+
+  const title = await browser.find('h1.jumbotron-title');
+  console.log(title.textContent);
+
+  await browser.exit();
+}
+run();
+```
+The inner text of the element. It is read from the `textContent` attribute of
+the underlying element.
+
+#### Value
+```js
+import PhantomJS from 'phantomjs'
+
+async function run() {
+  const browser = new PhantomJS();
+  await browser.open('http://github.com');
+
+  const title = await browser.find('h1.jumbotron-title');
+  console.log(title.textContent);
+
+  await browser.exit();
+}
+run();
+```
+The value of the element if it is an input element. It is read from the `value`
+attribute of the underlying element. If the element is not an input, `value` is
+`undefined`.
 
 ## Development
 ### Getting Started
