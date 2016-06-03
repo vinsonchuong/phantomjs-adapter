@@ -213,6 +213,42 @@ The value of the element if it is an input element. It is read from the `value`
 attribute of the underlying element. If the element is not an input, `value` is
 `undefined`.
 
+#### Click
+```js
+import PhantomJS from 'phantomjs'
+
+async function run() {
+  const browser = new PhantomJS();
+  await browser.open('http://github.com');
+
+  const signUpButton = await browser.find('a', {text: 'Sign up'});
+  await signUpButton.click();
+
+  await browser.exit();
+}
+run();
+```
+Instructs the PhantomJS process to click on the center of the element, at the
+time `PhantomJS#find` was executed, using `PhantomJS#sendEvent`.
+
+#### FillIn
+```js
+import PhantomJS from 'phantomjs'
+
+async function run() {
+  const browser = new PhantomJS();
+  await browser.open('http://github.com');
+
+  const searchInput = await browser.find('input[name="q"]');
+  await searchInput.fillIn('awesome code');
+
+  await browser.exit();
+}
+run();
+```
+Instructs the PhantomJS process to focus an element assumed to be a text input
+using `Element#click` and then send `keypress` events via `PhantomJS#sendEvent`.
+
 ## Development
 ### Getting Started
 The application requires the following external dependencies:
