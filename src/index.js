@@ -6,9 +6,8 @@ import Client from 'phantomjs-promise-es6/lib/client';
 const phantomScriptPath = require.resolve('phantomjs-promise-es6/lib/phantom-script.js');
 
 export class Element {
-  constructor(browser, selector, data) {
+  constructor(browser, data) {
     this.browser = browser;
-    this.selector = selector;
     Object.assign(this, data);
   }
 
@@ -60,12 +59,12 @@ export default class {
   }
 
   async find(selector, {text} = {}) {
-    const xpath = Object.is(text, undefined) ?
-      cssToXPath(selector) :
+    const xpath = typeof text === 'string' ?
       cssToXPath
         .parse(selector)
         .where(cssToXPath.xPathBuilder.text().contains(text))
-        .toXPath();
+        .toXPath() :
+      cssToXPath(selector);
     const data = await this.evaluate(`
       var element = document.evaluate(
         '${xpath.replace(/'/g, "\\'")}',
@@ -88,6 +87,6 @@ export default class {
         value: element.value
       };
     `);
-    return new this.constructor.Element(this, selector, data);
+    return new this.constructor.Element(this, data);
   }
 }
