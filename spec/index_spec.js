@@ -91,6 +91,17 @@ describe('phantomjs-promise-es6', () => {
     }
   ));
 
+  it('returns null if a DOM element does not exist', withHtml(
+    `
+    <!doctype html>
+    <meta charset="utf-8">
+    `,
+    async (browser) => {
+      const missing = await browser.find('div');
+      expect(missing).toBe(null);
+    }
+  ));
+
   it('can click on a DOM element', withHtml(
     `
     <!doctype html>

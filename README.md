@@ -129,10 +129,11 @@ async function run() {
 run();
 ```
 Finds an element on the currently open page given a CSS selector and optional
-text content substring. The promise is resolved with an instance of `Element`.
-The CSS selector and text content substring are converted into XPath and
-evaluated using `document.evaluate`. It is assumed that `PhantomJS#open` has
-been called and its returned promise resolved.
+text content substring. The promise is resolved with an instance of `Element`
+if the element is found and `null` otherwise. The CSS selector and text content
+substring are converted into XPath and evaluated using `document.evaluate`. It
+is assumed that `PhantomJS#open` has been called and its returned promise
+resolved.
 
 ### Element
 A class that represents a snapshot of an element rendered in the currently open

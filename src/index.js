@@ -65,6 +65,7 @@ export default class {
         .where(cssToXPath.xPathBuilder.text().contains(text))
         .toXPath() :
       cssToXPath(selector);
+
     const data = await this.evaluate(`
       var element = document.evaluate(
         '${xpath.replace(/'/g, "\\'")}',
@@ -73,6 +74,10 @@ export default class {
         XPathResult.FIRST_ORDERED_NODE_TYPE,
         null
       ).singleNodeValue;
+
+      if (!element) {
+        return null;
+      }
 
       var attributes = {};
       for (var i = 0; i < element.attributes.length; i++) {
@@ -87,6 +92,10 @@ export default class {
         value: element.value
       };
     `);
+
+    if (!data) {
+      return null;
+    }
     return new this.constructor.Element(this, data);
   }
 }
