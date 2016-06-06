@@ -1,16 +1,16 @@
-# phantomjs-promise-es6
-[![Build Status](https://travis-ci.org/vinsonchuong/phantomjs-promise-es6.svg?branch=master)](https://travis-ci.org/vinsonchuong/phantomjs-promise-es6)
+# phantomjs-promise
+[![Build Status](https://travis-ci.org/vinsonchuong/phantomjs-promise.svg?branch=master)](https://travis-ci.org/vinsonchuong/phantomjs-promise)
 
-An ES6 promise adapter for [PhantomJS](http://phantomjs.org/) for use with
-[ES7 async/await](https://github.com/lukehoban/ecmascript-asyncawait).
+An ES2015 promise adapter for [PhantomJS](http://phantomjs.org/) for use with
+[ES.next async/await](https://github.com/lukehoban/ecmascript-asyncawait).
 
 ## Installing
-`phantomjs-promise-es6` is available as an
-[npm package](https://www.npmjs.com/package/phantomjs-promise-es6).
+`phantomjs-promise` is available as an
+[npm package](https://www.npmjs.com/package/phantomjs-promise).
 
 ## Usage
 ```js
-import PhantomJS from 'phantomjs-promise-es6';
+import PhantomJS from 'phantomjs-promise';
 
 async function run() {
   const browser = new PhantomJS();
@@ -259,7 +259,7 @@ using `Element#click` and then send `keypress` events via `PhantomJS#sendEvent`.
 
 ### Extension
 ```js
-import PhantomJS, {Element} from 'phantomjs-promise-es6';
+import PhantomJS, {Element} from 'phantomjs-promise';
 
 export class Element extends Element {
 }
@@ -268,7 +268,7 @@ export default class extends PhantomJS {
   static Element = Element;
 }
 ```
-`phantomjs-promise-es6` exposes a class-based interface and can be extended by
+`phantomjs-promise` exposes a class-based interface and can be extended by
 subclassing `PhantomJS` and `Element.` Note that `PhantomJS#find` returns an
 instance of `PhantomJS.Element`; so, to override `Element`, it must be assigned
 to an `Element` static attribute of a subclass of `PhantomJS`, as shown above.

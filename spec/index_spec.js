@@ -1,7 +1,7 @@
 import {childProcess} from 'node-promise-es6';
 import Directory from 'directory-helpers';
 import {path as phantomJsPath} from 'phantomjs-prebuilt';
-import PhantomJS from 'phantomjs-promise-es6';
+import PhantomJS from 'phantomjs-promise';
 
 async function phantomPids() {
   try {
@@ -27,7 +27,7 @@ function withHtml(html, test) {
   };
 }
 
-describe('phantomjs-promise-es6', () => {
+describe('phantomjs-promise', () => {
   it('can kill the phantomjs process', async () => {
     const browser = new PhantomJS();
     expect(await phantomPids()).toContain(browser.process.pid);

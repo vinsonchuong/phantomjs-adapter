@@ -1,10 +1,10 @@
 {
-  "name": "phantomjs-promise-es6",
+  "name": "phantomjs-promise",
   "version": "0.0.1",
-  "description": "An ES6 promise adapter for PhantomJS for use with ES7 async/await",
+  "description": "An ES2015 promise adapter for PhantomJS for use with ES.next async/await",
   "keywords": [],
-  "homepage": "https://github.com/vinsonchuong/phantomjs-promise-es6",
-  "bugs": "https://github.com/vinsonchuong/phantomjs-promise-es6/issues",
+  "homepage": "https://github.com/vinsonchuong/phantomjs-promise",
+  "bugs": "https://github.com/vinsonchuong/phantomjs-promise/issues",
   "license": "MIT",
   "author": "Vinson Chuong <vinsonchuong@gmail.com>",
   "files": [
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vinsonchuong/phantomjs-promise-es6"
+    "url": "https://github.com/vinsonchuong/phantomjs-promise"
   },
   "scripts": {
     "prepublish": "dist-es6",
