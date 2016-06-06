@@ -34,7 +34,7 @@ function processRequest() {
     if (request.method === 'exit') {
       phantom.exit(0);
     } else {
-      processRequest();
+      setTimeout(processRequest, 0);
     }
   }
   methods[request.method].apply(null, request.params.concat(callback));
