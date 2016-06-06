@@ -124,6 +124,8 @@ async function run() {
   const signUpButton = await browser.find('a', {text: 'Sign up'});
   await signUpButton.click();
 
+  await browser.find('h1', {text: 'Join GitHub', wait: 2000});
+
   await browser.exit();
 }
 run();
@@ -134,6 +136,11 @@ if the element is found and `null` otherwise. The CSS selector and text content
 substring are converted into XPath and evaluated using `document.evaluate`. It
 is assumed that `PhantomJS#open` has been called and its returned promise
 resolved.
+
+An optional number of milliseconds to `wait` can be provided. The XPath
+selector will be evaluated every 100 milliseconds upto the provided `wait`
+time. If an element is found, it is returned immediately. Otherwise, `null` is
+returned after the `wait` time.
 
 ### Element
 A class that represents a snapshot of an element rendered in the currently open

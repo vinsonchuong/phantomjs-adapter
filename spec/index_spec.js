@@ -102,6 +102,35 @@ describe('phantomjs-promise-es6', () => {
     }
   ));
 
+  it('can wait until an element is found', withHtml(
+    `
+    <!doctype html>
+    <meta charset="utf-8">
+    <script>
+      setTimeout(function() {
+        var p = document.createElement('p');
+        p.textContent = 'Hello World!';
+        document.body.appendChild(p);
+      }, 1000);
+    </script>
+    `,
+    async (browser) => {
+      const paragraph = await browser.find('p', {wait: 2000});
+      expect(paragraph.textContent).toBe('Hello World!');
+    }
+  ));
+
+  it('returns null if an element cannot be found within the time limit', withHtml(
+    `
+    <!doctype html>
+    <meta charset="utf-8">
+    `,
+    async (browser) => {
+      const missing = await browser.find('p', {wait: 1000});
+      expect(missing).toBe(null);
+    }
+  ));
+
   it('can click on a DOM element', withHtml(
     `
     <!doctype html>

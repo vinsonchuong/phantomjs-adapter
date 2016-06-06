@@ -2,6 +2,7 @@ import {spawn} from 'child_process';
 import {path as phantomJsPath} from 'phantomjs-prebuilt';
 import cssToXPath from 'css-to-xpath';
 import Client from 'phantomjs-promise-es6/lib/client';
+import findScript from 'phantomjs-promise-es6/lib/find-script';
 
 const phantomScriptPath = require.resolve('phantomjs-promise-es6/lib/phantom-script.js');
 
@@ -58,44 +59,31 @@ export default class {
     `);
   }
 
-  async find(selector, {text} = {}) {
+  async find(selector, {text, wait = 0} = {}) {
     const xpath = typeof text === 'string' ?
       cssToXPath
         .parse(selector)
         .where(cssToXPath.xPathBuilder.text().contains(text))
         .toXPath() :
       cssToXPath(selector);
+    const script = findScript(xpath);
 
-    const data = await this.evaluate(`
-      var element = document.evaluate(
-        '${xpath.replace(/'/g, "\\'")}',
-        document,
-        null,
-        XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null
-      ).singleNodeValue;
-
-      if (!element) {
-        return null;
-      }
-
-      var attributes = {};
-      for (var i = 0; i < element.attributes.length; i++) {
-        const attribute = element.attributes[i];
-        attributes[attribute.name] = attribute.value;
-      }
-
-      return {
-        attributes: attributes,
-        boundingClientRect: element.getBoundingClientRect(),
-        textContent: element.textContent,
-        value: element.value
-      };
-    `);
-
-    if (!data) {
-      return null;
+    async function sleep(ms) {
+      await new Promise((resolve) => {
+        setTimeout(resolve, ms);
+      });
     }
-    return new this.constructor.Element(this, data);
+
+    let data = await this.evaluate(script);
+    let remainingWait = wait;
+    while (!data && remainingWait > 0) {
+      await sleep(100);
+      remainingWait -= 100;
+      data = await this.evaluate(script);
+    }
+
+    return data ?
+      new this.constructor.Element(this, data) :
+      null;
   }
 }
