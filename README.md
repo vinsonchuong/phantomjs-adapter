@@ -257,6 +257,22 @@ run();
 Instructs the PhantomJS process to focus an element assumed to be a text input
 using `Element#click` and then send `keypress` events via `PhantomJS#sendEvent`.
 
+### Extension
+```js
+import PhantomJS, {Element} from 'phantomjs-promise-es6';
+
+export class Element extends Element {
+}
+
+export default class extends PhantomJS {
+  static Element = Element;
+}
+```
+`phantomjs-promise-es6` exposes a class-based interface and can be extended by
+subclassing `PhantomJS` and `Element.` Note that `PhantomJS#find` returns an
+instance of `PhantomJS.Element`; so, to override `Element`, it must be assigned
+to an `Element` static attribute of a subclass of `PhantomJS`, as shown above.
+
 ## Development
 ### Getting Started
 The application requires the following external dependencies:
