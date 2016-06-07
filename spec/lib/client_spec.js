@@ -1,5 +1,5 @@
 import Directory from 'directory-helpers';
-import Client from 'phantomjs-promise/lib/client';
+import Client from 'phantomjs-adapter/lib/client';
 
 const phantomScript = `
 'use strict';

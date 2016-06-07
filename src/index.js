@@ -1,10 +1,10 @@
 import {spawn} from 'child_process';
 import {path as phantomJsPath} from 'phantomjs-prebuilt';
 import cssToXPath from 'css-to-xpath';
-import Client from 'phantomjs-promise/lib/client';
-import findScript from 'phantomjs-promise/lib/find-script';
+import Client from 'phantomjs-adapter/lib/client';
+import findScript from 'phantomjs-adapter/lib/find-script';
 
-const phantomScriptPath = require.resolve('phantomjs-promise/lib/phantom-script.js');
+const phantomScriptPath = require.resolve('phantomjs-adapter/lib/phantom-script.js');
 
 export class Element {
   constructor(browser, data) {
