@@ -180,6 +180,21 @@ describe('phantomjs-adapter', () => {
   ));
 
   it('throws an exception when it fails to open a page', withBrowser(async (browser) => {
-    expect(await catchError(browser.open('http://foo'))).toBe('Failed to open http://foo');
+    expect(await catchError(browser.open('http://foo')))
+      .toContain('Failed to open http://foo');
+  }));
+
+  it('throws an exception when it opens a page with a JavaScript exception', withBrowser(async (browser, directory) => {
+    await directory.write({
+      'index.html': `
+      <!doctype html>
+      <meta charset="utf-8">
+      <script>
+        throw new Error('This is a JS error');
+      </script>
+      `
+    })
+    expect(await catchError(browser.open(`file://${directory.path('index.html')}`)))
+      .toContain('This is a JS error');
   }));
 });

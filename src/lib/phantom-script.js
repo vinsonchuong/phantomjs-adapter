@@ -3,34 +3,64 @@
 var system = require('system');
 var webpage = require('webpage');
 
+function errorMessage(message, trace) {
+  var lines = [message];
+  (trace || []).forEach(function(frame) {
+    lines.push(
+      '    at ' +
+      (frame.function || '') +
+      ' (' +
+      frame.file +
+      ':' +
+      frame.line +
+      ')'
+    );
+  });
+  return lines.join('\n');
+}
+
 var page;
 
 var methods = {
   exit: function(callback) {
-    callback(true);
+    callback({result: true});
   },
   open: function(url, callback) {
+    var error;
+
     page = webpage.create();
+    page.onError = function(message, trace) {
+      error = errorMessage(message, trace);
+    };
     page.open(url, function(status) {
-      callback(status === 'success');
+      page.onError = null;
+      callback(
+        error ? {error: error} :
+        status !== 'success' ? {error: 'Failed to open ' + url} :
+        {result: true}
+      );
     });
   },
   evaluate: function(functionBody, callback) {
-    callback(page.evaluate(new Function(functionBody)));
+    callback({result: page.evaluate(new Function(functionBody))});
   },
   sendEvent: function() {
     var params = Array.prototype.slice.call(arguments, 0, -1);
     var callback = arguments[arguments.length - 1];
     page.sendEvent.apply(page, params);
-    callback(true);
+    callback({result: true});
   }
 };
 
 function processRequest() {
   var request = JSON.parse(system.stdin.readLine());
 
-  function callback(result) {
-    system.stdout.writeLine(JSON.stringify({id: request.id, result: result}));
+  function callback(value) {
+    system.stdout.writeLine(JSON.stringify(
+      value.error ?
+        {id: request.id, error: value.error} :
+        {id: request.id, result: value.result}
+    ));
     if (request.method === 'exit') {
       phantom.exit(0);
     } else {
