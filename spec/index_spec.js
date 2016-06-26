@@ -1,4 +1,5 @@
 import {childProcess} from 'node-promise-es6';
+import {catchError} from 'jasmine-es6';
 import Directory from 'directory-helpers';
 import {path as phantomJsPath} from 'phantomjs-prebuilt';
 import PhantomJS from 'phantomjs-adapter';
@@ -19,6 +20,20 @@ function withHtml(html, test) {
     try {
       await directory.write({'index.html': html});
       await browser.open(`file://${directory.path('index.html')}`);
+      await test(browser, directory);
+    } finally {
+      await browser.exit();
+      await directory.remove();
+    }
+  };
+}
+
+function withBrowser(test) {
+  return async () => {
+    const directory = new Directory('temp');
+    const browser = new PhantomJS();
+    try {
+      await directory.create();
       await test(browser, directory);
     } finally {
       await browser.exit();
@@ -163,4 +178,8 @@ describe('phantomjs-adapter', () => {
       expect(input.value).toBe('Hello World!');
     }
   ));
+
+  it('throws an exception when it fails to open a page', withBrowser(async (browser) => {
+    expect(await catchError(browser.open('http://foo'))).toBe('Failed to open http://foo');
+  }));
 });
