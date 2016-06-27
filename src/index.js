@@ -42,10 +42,7 @@ export default class {
   }
 
   async open(url) {
-    const opened = await this.client.send('open', [url]);
-    if (!opened) {
-      throw new Error(`Failed to open ${url}`)
-    }
+    await this.client.send('open', [url]);
   }
 
   async evaluate(functionBody) {

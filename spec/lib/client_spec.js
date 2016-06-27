@@ -14,7 +14,7 @@ function withClient(script, test) {
       phantom.process.kill();
       await directory.remove();
     }
-  }
+  };
 }
 
 
