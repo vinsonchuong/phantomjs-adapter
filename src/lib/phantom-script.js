@@ -42,7 +42,16 @@ var methods = {
     });
   },
   evaluate: function(functionBody, callback) {
-    callback({result: page.evaluate(new Function(functionBody))});
+    var error;
+    page.onError = function(message, trace) {
+      error = errorMessage(message, trace);
+    };
+    var result = page.evaluate(new Function(functionBody));
+    callback(
+      error ?
+        {error: error} :
+        {result: result}
+    );
   },
   sendEvent: function() {
     var params = Array.prototype.slice.call(arguments, 0, -1);

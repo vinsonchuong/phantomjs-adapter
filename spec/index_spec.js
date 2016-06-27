@@ -197,4 +197,18 @@ describe('phantomjs-adapter', () => {
     expect(await catchError(browser.open(`file://${directory.path('index.html')}`)))
       .toContain('This is a JS error');
   }));
+
+  it('throws an exception when evaluating JS produces an exception', withHtml(
+    `
+    <!doctype html>
+    <meta charset="utf-8">
+    `,
+    async (browser) => {
+      expect(await catchError(
+        browser.evaluate(`
+          throw new Error('This is an error.')
+        `)
+      )).toContain('This is an error.');
+    }
+  ));
 });
