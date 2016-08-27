@@ -24,15 +24,15 @@
     "test": "eslint && jasmine"
   },
   "dependencies": {
-    "phantomjs-prebuilt": "^2.1.7",
+    "phantomjs-prebuilt": "^2.1.12",
     "ndjson": "^1.4.3",
     "css-to-xpath": "^0.1.0"
   },
   "devDependencies": {
-    "dist-es6": "^0.1.18",
-    "jasmine-es6": "^0.1.10",
+    "dist-es6": "^0.2.4",
+    "jasmine-es6": "^0.3.0",
     "node-promise-es6": "^0.3.2",
-    "eslint-defaults": "^0.2.7",
-    "directory-helpers": "^0.0.9"
+    "eslint-defaults": "^0.3.1",
+    "directory-helpers": "^0.1.3"
   }
 }
