@@ -1,6 +1,7 @@
 import {childProcess} from 'node-promise-es6';
 import {catchError} from 'jasmine-es6';
 import register from 'test-inject';
+import {parallel} from 'esnext-async';
 import Directory from 'directory-helpers';
 import {path as phantomJsPath} from 'phantomjs-prebuilt';
 import PhantomJS from 'phantomjs-adapter';
@@ -207,5 +208,41 @@ describe('phantomjs-adapter', () => {
     expect(await catchError(
       browser.evaluate('throw new Error("This is an error.")')
     )).toContain('This is an error.');
+  }));
+
+  it('logs requests', inject(async ({temp, browser}) => {
+    await temp.write({
+      'index.html': `
+        <!doctype html>
+        <meta charset="utf-8">
+        <img src="file://${temp.path('image.png')}">
+      `
+    });
+
+    await parallel(
+      async () => {
+        await browser.open(`file://${temp.path('index.html')}`);
+      },
+      async () => {
+        expect(await browser.logs).toEqual({
+          count: 1,
+          method: 'GET',
+          url: `file://${temp.path('index.html')}`,
+          headers: {
+            'Accept': '*/*',
+            'User-Agent': jasmine.stringMatching('PhantomJS')
+          }
+        });
+        expect(await browser.logs).toEqual({
+          count: 2,
+          method: 'GET',
+          url: `file://${temp.path('image.png')}`,
+          headers: {
+            'Accept': '*/*',
+            'User-Agent': jasmine.stringMatching('PhantomJS')
+          }
+        });
+      }
+    );
   }));
 });

@@ -1,5 +1,6 @@
 import {catchError} from 'jasmine-es6';
 import register from 'test-inject';
+import {parallel} from 'esnext-async';
 import Directory from 'directory-helpers';
 import Client from 'phantomjs-adapter/lib/client';
 
@@ -52,5 +53,28 @@ describe('Client', () => {
       }));
     `);
     expect(await catchError(client.send('call', []))).toBe('This is an error.');
+  }));
+
+  it('receives and propagates log messages', inject(async ({makeClient}) => {
+    const client = await makeClient(`
+      'use strict';
+      var system = require('system');
+      var request;
+      while (true) {
+        request = JSON.parse(system.stdin.readLine());
+        system.stdout.writeLine(JSON.stringify({
+          log: 'Log'
+        }));
+        system.stdout.writeLine(JSON.stringify({
+          id: request.id,
+          result: true
+        }));
+      }
+    `);
+
+    await parallel(
+      async () => await client.send('start', []),
+      async () => expect(await client.logs).toEqual('Log')
+    );
   }));
 });

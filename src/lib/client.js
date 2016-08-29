@@ -1,4 +1,5 @@
 import {parse, serialize} from 'ndjson';
+import {AwaitableObservable} from 'esnext-async';
 
 class RequestQueue {
   constructor() {
@@ -50,12 +51,16 @@ export default class {
     this.requests = new RequestQueue();
     this.stdio = new StdioAdapter(serverProcess);
 
-    this.stdio.read(({id, result, error}) => {
-      if (error) {
-        this.requests.reject(id, new Error(error));
-      } else {
-        this.requests.resolve(id, result);
-      }
+    this.logs = new AwaitableObservable((logs) => {
+      this.stdio.read(({id, result, error, log}) => {
+        if (log) {
+          logs.next(log);
+        } else if (error) {
+          this.requests.reject(id, new Error(error));
+        } else {
+          this.requests.resolve(id, result);
+        }
+      });
     });
   }
 

@@ -32,6 +32,20 @@ var methods = {
     page.onError = function(message, trace) {
       error = errorMessage(message, trace);
     };
+    page.onResourceRequested = function(requestData) {
+      var headers = {};
+      requestData.headers.forEach(function(header) {
+        headers[header.name] = header.value;
+      });
+      system.stdout.writeLine(JSON.stringify({
+        log: {
+          count: requestData.id,
+          method: requestData.method,
+          url: requestData.url,
+          headers: headers
+        }
+      }));
+    };
     page.open(url, function(status) {
       page.onError = null;
       callback(

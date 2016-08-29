@@ -37,6 +37,10 @@ export default class {
     this.client = new Client(this.process);
   }
 
+  get logs() {
+    return this.client.logs;
+  }
+
   async exit() {
     return await this.client.send('exit');
   }
