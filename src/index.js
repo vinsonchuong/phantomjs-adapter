@@ -4,8 +4,6 @@ import cssToXPath from 'css-to-xpath';
 import Client from 'phantomjs-adapter/lib/client';
 import findScript from 'phantomjs-adapter/lib/find-script';
 
-const phantomScriptPath = require.resolve('phantomjs-adapter/lib/phantom-script.js');
-
 export class Element {
   constructor(browser, data) {
     this.browser = browser;
@@ -29,9 +27,10 @@ export class Element {
 
 export default class {
   static Element = Element;
+  static scriptPath = require.resolve('phantomjs-adapter/phantom');
 
   constructor() {
-    this.process = spawn(phantomJsPath, [phantomScriptPath], {
+    this.process = spawn(phantomJsPath, [this.constructor.scriptPath], {
       stdio: ['pipe', 'pipe', 'inherit']
     });
     this.client = new Client(this.process);
