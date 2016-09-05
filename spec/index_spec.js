@@ -225,6 +225,7 @@ describe('phantomjs-adapter', () => {
       },
       async () => {
         expect(await browser.logs).toEqual({
+          type: 'request',
           id: 1,
           method: 'GET',
           url: `file://${temp.path('index.html')}`,
@@ -234,6 +235,7 @@ describe('phantomjs-adapter', () => {
           }
         });
         expect(await browser.logs).toEqual({
+          type: 'request',
           id: 2,
           method: 'GET',
           url: `file://${temp.path('image.png')}`,
@@ -243,12 +245,19 @@ describe('phantomjs-adapter', () => {
           }
         });
         expect(await browser.logs).toEqual({
+          type: 'response',
           id: 1,
           url: `file://${temp.path('index.html')}`,
+          headers: {
+            'Last-Modified': jasmine.any(String),
+            'Content-Length': '119'
+          }
         });
         expect(await browser.logs).toEqual({
+          type: 'response',
           id: 2,
-          url: `file://${temp.path('image.png')}`
+          url: `file://${temp.path('image.png')}`,
+          error: jasmine.stringMatching('No such file')
         });
       }
     );
