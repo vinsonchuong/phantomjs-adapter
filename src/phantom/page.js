@@ -9,6 +9,7 @@ module.exports = {
   open: function(url, callback) {
     currentPage = webpage.create();
 
+    currentPage.onConsoleMessage = log.console;
     currentPage.onResourceRequested = log.network;
     currentPage.onResourceReceived = log.network;
     currentPage.onResourceError = log.network;

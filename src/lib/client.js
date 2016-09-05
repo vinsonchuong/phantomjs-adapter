@@ -51,14 +51,18 @@ export default class {
     this.requests = new RequestQueue();
     this.stdio = new StdioAdapter(serverProcess);
 
+    this.stdio.read((payload) => {
+      if ('result' in payload) {
+        this.requests.resolve(payload.id, payload.result);
+      } else if ('error' in payload) {
+        this.requests.reject(payload.id, new Error(payload.error));
+      }
+    });
+
     this.logs = new AwaitableObservable((logs) => {
-      this.stdio.read(({id, result, error, log}) => {
-        if (log) {
-          logs.next(log);
-        } else if (error) {
-          this.requests.reject(id, new Error(error));
-        } else {
-          this.requests.resolve(id, result);
+      this.stdio.read((payload) => {
+        if ('log' in payload) {
+          logs.next(payload.log);
         }
       });
     });

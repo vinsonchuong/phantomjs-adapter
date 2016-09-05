@@ -262,4 +262,27 @@ describe('phantomjs-adapter', () => {
       }
     );
   }));
+
+  it('logs console messages', inject(async ({temp, browser}) => {
+    await temp.write({
+      'index.html': `
+        <!doctype html>
+        <meta charset="utf-8">
+        <script>console.log('Hello World!')</script>
+      `
+    });
+    await parallel(
+      async () => {
+        await browser.open(`file://${temp.path('index.html')}`);
+      },
+      async () => {
+        expect(
+          await browser.logs.filter(({type}) => type === 'console')
+        ).toEqual({
+          type: 'console',
+          message: 'Hello World!'
+        });
+      }
+    );
+  }));
 });

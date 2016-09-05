@@ -10,6 +10,13 @@ function log(payload) {
 var networkCache = {};
 
 module.exports = {
+  console: function(message) {
+    log({
+      type: 'console',
+      message: message
+    });
+  },
+
   network: function(data) {
     if (
       data.id in networkCache ||
