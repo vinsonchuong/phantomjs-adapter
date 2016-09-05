@@ -19,6 +19,10 @@ function errorMessage(message, trace) {
   return lines.join('\n');
 }
 
+function log(payload) {
+  system.stdout.writeLine(JSON.stringify({log: payload}));
+}
+
 var page;
 
 var methods = {
@@ -37,15 +41,23 @@ var methods = {
       requestData.headers.forEach(function(header) {
         headers[header.name] = header.value;
       });
-      system.stdout.writeLine(JSON.stringify({
-        log: {
-          count: requestData.id,
-          method: requestData.method,
-          url: requestData.url,
-          headers: headers
-        }
-      }));
+      log({
+        id: requestData.id,
+        method: requestData.method,
+        url: requestData.url,
+        headers: headers
+      });
     };
+    page.onResourceReceived = function(response) {
+      if (response.stage !== 'end') {
+        return;
+      }
+
+      log({
+        id: response.id,
+        url: response.url
+      });
+    }
     page.open(url, function(status) {
       page.onError = null;
       callback(

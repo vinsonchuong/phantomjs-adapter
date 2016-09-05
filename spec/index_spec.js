@@ -225,7 +225,7 @@ describe('phantomjs-adapter', () => {
       },
       async () => {
         expect(await browser.logs).toEqual({
-          count: 1,
+          id: 1,
           method: 'GET',
           url: `file://${temp.path('index.html')}`,
           headers: {
@@ -234,13 +234,21 @@ describe('phantomjs-adapter', () => {
           }
         });
         expect(await browser.logs).toEqual({
-          count: 2,
+          id: 2,
           method: 'GET',
           url: `file://${temp.path('image.png')}`,
           headers: {
             'Accept': '*/*',
             'User-Agent': jasmine.stringMatching('PhantomJS')
           }
+        });
+        expect(await browser.logs).toEqual({
+          id: 1,
+          url: `file://${temp.path('index.html')}`,
+        });
+        expect(await browser.logs).toEqual({
+          id: 2,
+          url: `file://${temp.path('image.png')}`
         });
       }
     );

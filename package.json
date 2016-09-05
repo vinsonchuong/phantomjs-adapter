@@ -27,7 +27,7 @@
     "phantomjs-prebuilt": "^2.1.12",
     "ndjson": "^1.4.3",
     "css-to-xpath": "^0.1.0",
-    "esnext-async": "^0.0.7"
+    "esnext-async": "^0.0.8"
   },
   "devDependencies": {
     "dist-es6": "^0.2.4",
