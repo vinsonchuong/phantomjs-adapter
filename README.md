@@ -32,6 +32,18 @@ run();
 #### PhantomJS
 An Class that mediates communication with a PhantomJS browser instance.
 
+##### Logs
+```js
+import PhantomJS from 'phantomjs'
+
+const browser = new PhantomJS();
+browser.logs.forEach((log) => {
+  console.log(log);
+});
+```
+An [AwaitableObservable](https://github.com/vinsonchuong/esnext-async#awaitableobservable)
+that publishes `console` messages and details about network requests.
+
 ##### Constructor
 ```js
 import PhantomJS from 'phantomjs'
