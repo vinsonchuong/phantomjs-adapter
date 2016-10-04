@@ -250,7 +250,7 @@ describe('phantomjs-adapter', () => {
           url: `file://${temp.path('index.html')}`,
           headers: {
             'Last-Modified': jasmine.any(String),
-            'Content-Length': '119'
+            'Content-Length': jasmine.any(String)
           }
         });
         expect(await browser.logs).toEqual({
