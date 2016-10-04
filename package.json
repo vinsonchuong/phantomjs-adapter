@@ -1,7 +1,7 @@
 {
   "name": "phantomjs-adapter",
   "version": "0.0.4",
-  "description": "An ES2015 promise adapter for PhantomJS for use with ES.next async/await",
+  "description": "An ES.next promise adapter for PhantomJS for use with ES.next async/await",
   "keywords": [],
   "homepage": "https://github.com/vinsonchuong/phantomjs-adapter",
   "bugs": "https://github.com/vinsonchuong/phantomjs-adapter/issues",

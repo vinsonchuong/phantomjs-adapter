@@ -1,7 +1,7 @@
 # phantomjs-adapter
 [![Build Status](https://travis-ci.org/vinsonchuong/phantomjs-adapter.svg?branch=master)](https://travis-ci.org/vinsonchuong/phantomjs-adapter)
 
-An ES2015 promise adapter for [PhantomJS](http://phantomjs.org/) for use with
+An ES.next promise adapter for [PhantomJS](http://phantomjs.org/) for use with
 [ES.next async/await](https://github.com/lukehoban/ecmascript-asyncawait).
 
 ## Installing
@@ -271,9 +271,9 @@ using `Element#click` and then send `keypress` events via `PhantomJS#sendEvent`.
 
 ### Extension
 ```js
-import PhantomJS, {Element} from 'phantomjs-adapter';
+import PhantomJS, {Element as BaseElement} from 'phantomjs-adapter';
 
-export class Element extends Element {
+export class Element extends BaseElement {
 }
 
 export default class extends PhantomJS {
