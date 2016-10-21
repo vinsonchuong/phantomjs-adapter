@@ -214,6 +214,24 @@ run();
 The inner text of the element. It is read from the `textContent` attribute of
 the underlying element.
 
+#### InnerHTML
+```js
+import PhantomJS from 'phantomjs'
+
+async function run() {
+  const browser = new PhantomJS();
+  await browser.open('http://github.com');
+
+  const body = await browser.find('body');
+  console.log(body.innerHTML);
+
+  await browser.exit();
+}
+run();
+```
+The inner text of the element. It is read from the `innerHTML` attribute of
+the underlying element.
+
 #### Value
 ```js
 import PhantomJS from 'phantomjs'

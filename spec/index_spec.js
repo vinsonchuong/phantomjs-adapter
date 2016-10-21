@@ -56,7 +56,7 @@ describe('phantomjs-adapter', () => {
           class="container"
           style="position: absolute; top: 0; left: 0; width: 200px; height: 100px;"
         >
-          Hello World!
+          <span>Hello World!</span>
         </div>
         <input value="text">
       `
@@ -65,6 +65,7 @@ describe('phantomjs-adapter', () => {
 
     const div = await browser.find('div');
     expect(div.textContent.trim()).toBe('Hello World!');
+    expect(div.innerHTML.trim()).toBe('<span>Hello World!</span>');
     expect(div.attributes.id).toBe('root');
     expect(div.attributes.class).toBe('container');
     expect(div.boundingClientRect).toEqual({

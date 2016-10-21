@@ -22,6 +22,7 @@ export default function(xpath) {
       attributes: attributes,
       boundingClientRect: element.getBoundingClientRect(),
       textContent: element.textContent,
+      innerHTML: element.innerHTML,
       value: element.value
     };
   `;
