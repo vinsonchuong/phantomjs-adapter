@@ -14,8 +14,8 @@ export class Element {
     const {top, left, width, height} = this.boundingClientRect;
     return await this.browser.sendEvent(
       'click',
-      top + width / 2,
-      left + height / 2
+      left + width / 2,
+      top + height / 2
     );
   }
 

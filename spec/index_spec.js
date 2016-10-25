@@ -147,7 +147,10 @@ describe('phantomjs-adapter', () => {
       'index.html': `
         <!doctype html>
         <meta charset="utf-8">
-        <button onClick="root.textContent = 'Hello World!';">
+        <button
+          onClick="root.textContent = 'Hello World!';"
+          style="margin-top: 100px; margin-left: 300px;"
+        >
           Button
         </button>
         <div id="root"></div>
