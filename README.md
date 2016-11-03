@@ -154,13 +154,13 @@ selector will be evaluated every 100 milliseconds upto the provided `wait`
 time. If an element is found, it is returned immediately. Otherwise, `null` is
 returned after the `wait` time.
 
-### Element
+#### Element
 A class that represents a snapshot of an element rendered in the currently open
 page of a PhantomJS browser. It exposes data about the element and provides an
 interface for sending user actions to that element. Element instances are
 returned by `PhantomJS#find`.
 
-#### Attributes
+##### Attributes
 ```js
 import PhantomJS from 'phantomjs'
 
@@ -177,7 +177,7 @@ run();
 ```
 An object representing the HTML attributes of the element.
 
-#### BoundingClientRect
+##### BoundingClientRect
 ```js
 import PhantomJS from 'phantomjs'
 
@@ -196,7 +196,7 @@ An object containing the size and position of the element. These values are
 read using
 [`getBoundingClientRect()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect).
 
-#### TextContent
+##### TextContent
 ```js
 import PhantomJS from 'phantomjs'
 
@@ -214,7 +214,7 @@ run();
 The inner text of the element. It is read from the `textContent` attribute of
 the underlying element.
 
-#### InnerHTML
+##### InnerHTML
 ```js
 import PhantomJS from 'phantomjs'
 
@@ -232,7 +232,7 @@ run();
 The inner text of the element. It is read from the `innerHTML` attribute of
 the underlying element.
 
-#### Value
+##### Value
 ```js
 import PhantomJS from 'phantomjs'
 
@@ -251,7 +251,7 @@ The value of the element if it is an input element. It is read from the `value`
 attribute of the underlying element. If the element is not an input, `value` is
 `undefined`.
 
-#### Click
+##### Click
 ```js
 import PhantomJS from 'phantomjs'
 
@@ -269,7 +269,7 @@ run();
 Instructs the PhantomJS process to click on the center of the element, at the
 time `PhantomJS#find` was executed, using `PhantomJS#sendEvent`.
 
-#### FillIn
+##### FillIn
 ```js
 import PhantomJS from 'phantomjs'
 
